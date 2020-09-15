@@ -1,21 +1,22 @@
 {
     "name": "Reward",
     "short_name": "Reward",
+    "description": "Informs you on when you will be paid",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png",
+            "src": "./icons/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-512x512.png",
+            "src": "./icons/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
     ],
-    "theme_color": "#000000",
+    "theme_color": "#00ee93",
     "background_color": "#000000",
-    "start_url": "https://victor-azevedo.me/reward",
+    "start_url": "./",
     "display": "standalone",
     "orientation": "portrait"
 }

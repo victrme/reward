@@ -2,5 +2,5 @@
 Mining reward from 2miners
 
 ## Install
-* npm publish
+* npm forprod
 * parcel build --public-url . ./src/index.html
