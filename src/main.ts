@@ -99,6 +99,7 @@ function minerStats(json: MinerAPI) {
     }
 
     return (
+      'Dans ' +
       pluriel(d.jour, ["jour", "jours"]) + 
       (d.jour > 0 && d.heure > 0 ? ' et ' : '') +
       pluriel(d.heure, ["heure", "heures"])
