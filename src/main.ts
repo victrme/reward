@@ -1,4 +1,3 @@
-import moment from 'moment';
 
 type SumRewards = {
   inverval: number,
@@ -46,14 +45,13 @@ type PriceAPI = {
 type RestantDate = {
   jour: number;
   heure: number;
-  minute: number;
 }
 
 function minerStats(json: MinerAPI) {
 
   function average() {
 
-    let unix = moment().unix(),
+    let unix = Date.now(),
       yesterday = 0,
       daybefore = 0,
       jour = json.sumrewards[2].reward;
@@ -96,32 +94,53 @@ function minerStats(json: MinerAPI) {
 
   function countdown(d: RestantDate) {
 
-    let full = ''
+    const pluriel = (num: number, str: string[]):string => {
+      return (num === 1 ? `${num} ${str[0]}` : num > 1 ? `${num} ${str[1]}` : ``)
+    }
 
-    full += d.jour === 1 ? `${d.jour} jour, ` : d.jour > 1 ? `${d.jour} jours, ` : ``;
-    full += d.heure === 1 ? `${d.heure} heure` : d.heure > 1 ? `${d.heure} heures` : ``;
-    full += d.minute === 1 ? ` et ${d.minute} minute` : d.minute > 1 ? ` et ${d.minute} minutes` : `1 minute`;
-  
-    return full
+    return (
+      pluriel(d.jour, ["jour", "jours"]) + 
+      (d.jour > 0 && d.heure > 0 ? ' et ' : '') +
+      pluriel(d.heure, ["heure", "heures"])
+    )
   }
 
   function date(d: RestantDate) {
-    return ("Le " + moment().locale('fr').add({days: d.jour, hours: d.heure, minutes: d.minute}).format("DD MMMM à HH:mm"))
-  }
 
+    //fait avancer la date 
+    let laterDate = new Date;
+    laterDate.setDate(laterDate.getDate() + d.jour)
+    laterDate.setHours(laterDate.getHours() + d.heure)
+
+    const mois = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    const addTenZero = (num: number):string => num < 10 ? "0" + num.toString() : num.toString()
+
+    //enregistre les formats a afficher
+    let ldObj = {
+      mo: mois[laterDate.getMonth()],
+      j: laterDate.getDate(),
+      h: addTenZero(laterDate.getHours()),
+      mi: addTenZero(laterDate.getMinutes())
+    } 
+
+    return `Le ${ldObj.j} ${ldObj.mo} à ${ldObj.h}:${ldObj.mi}`
+  }
+  
+  //liste les doms à afficher
   const dom = {
     titre: document.querySelector('h1')!,
     jourrestant: id("jourrestant"),
     date: id("date")
   }
-
+  
+  //liste les dates a utiliser
   const moyenne = average();
   const restant = {
     jour: Math.floor(moyenne),
-    heure: Math.floor((moyenne * 24) % 24),
-    minute: Math.floor((moyenne * 24 * 60) % 60)
+    heure: Math.floor((moyenne * 24) % 24)
   }
 
+  //modifie le DOM en fonction de la moyenne trouvé
   if (json.hashrate === 0 || moyenne === 0) {
     dom.titre.innerText = "Tu ne mines pas"
     dom.jourrestant.style.display = "none"
