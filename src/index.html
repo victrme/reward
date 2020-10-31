@@ -1,45 +1,82 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="msapplication-TileColor" content="#2b5797">
-    <meta name="theme-color" content="#000000">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="msapplication-TileColor" content="#2b5797" />
+		<meta name="theme-color" content="#000000" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-512x512.png">
-    <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#00ee93" />
-    <link rel="manifest" href="./site.webmanifest" />
-    
-    <title>Tu seras payé</title>
-    <link rel="stylesheet" href="style.scss" />
-</head>
-<body>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="./icons/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./icons/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="./icons/favicon-16x16.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="./icons/android-chrome-192x192.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="./icons/android-chrome-512x512.png"
+		/>
+		<link
+			rel="mask-icon"
+			href="./icons/safari-pinned-tab.svg"
+			color="#00ee93"
+		/>
+		<link rel="manifest" href="./site.webmanifest" />
 
-    <aside>Chargement...</aside>
-    
-    <main>
-        <div>
-            <h1>Tu seras payé</h1>
-            <p id="jourrestant">Dans 0 jours 00 heures et 00 minutes</p>
-            <p id="date">Le 00 janvier à 00 : 00</p>
-        </div>
-        
-        <div>
-            <p><span id="eth">0.000</span> / 0.05⬨</p>
-            <p><span id="prixbal">00.00</span> / <span id="prixmax">00.00</span>€</p>
-        </div>
-        
-        <div>
-            <p>
-                <a id="minerLink" href="" target="_blank" rel="noreferrer">vers 2miners</a>
-            </p>
-        </div>
-    </main>
+		<title>Tu seras payé</title>
+		<link rel="stylesheet" href="style.scss" />
+	</head>
+	<body>
+		<aside>Chargement...</aside>
 
-    <script src="./main.ts"></script>
-</body>
+		<main>
+			<div>
+				<h1>Tu seras payé</h1>
+				<p id="jourrestant">Dans 0 jours 00 heures et 00 minutes</p>
+				<p id="date">Le 00 janvier à 00 : 00</p>
+			</div>
+
+			<div>
+				<p><span id="eth">0.000</span> / 0.05⬨</p>
+				<p>
+					<span id="prixbal">00.00</span> /
+					<span id="prixmax">00.00</span>€
+				</p>
+			</div>
+
+			<div>
+				<p>
+					<a id="minerLink" href="" target="_blank" rel="noreferrer"
+						>vers 2miners</a
+					>
+				</p>
+			</div>
+
+			<div>
+				<h3>History</h3>
+				<div class="history-liste"></div>
+			</div>
+		</main>
+
+		<script src="./main.ts"></script>
+	</body>
 </html>
