@@ -61,6 +61,14 @@ main {
 		margin: 0;
 	}
 
+	#date,
+	#jourrestant {
+		display: none;
+		&.shown {
+			display: block;
+		}
+	}
+
 	#minerLink {
 		background: $accent-2;
 		color: black;
