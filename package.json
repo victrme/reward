@@ -1,21 +1,24 @@
 {
-  "name": "reward",
-  "version": "1.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "parcel ./src/index.html",
-    "forprod": "parcel build --public-url . ./src/index.html"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
-    "cssnano": "^4.1.10",
-    "parcel-bundler": "^1.12.4",
-    "sass": "^1.28.0",
-    "ts-loader": "^8.0.3",
-    "typescript": "^4.0.5"
-  }
+	"name": "reward",
+	"version": "1.2.0",
+	"description": "",
+	"main": "./src/scripts/main.ts",
+	"scripts": {
+		"start": "parcel ./src/index.html",
+		"build": "parcel build --no-source-maps --public-url . ./src/index.html"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/node": "^14.14.6",
+		"regenerator-runtime": "^0.13.7"
+	},
+	"devDependencies": {
+		"cssnano": "^4.1.10",
+		"parcel-bundler": "^1.12.4",
+		"sass": "^1.28.0",
+		"ts-loader": "^8.0.3",
+		"typescript": "^4.0.5"
+	}
 }
