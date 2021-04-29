@@ -1,3 +1,5 @@
+import { Response, Storage } from './types'
+
 async function fetcher(url: string) {
 	const response = await fetch(url)
 	const json = await response.json()
@@ -5,16 +7,13 @@ async function fetcher(url: string) {
 }
 
 async function getEuroPrice() {
-	const x = await fetcher(
-		`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur`
-	)
+	const x = await fetcher(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur`)
 	return x.ethereum.eur
 }
 
-async function twoMinersData() {
-	const address = process.env.address
+async function twoMinersData(addr: string) {
 	const home = 'https://eth.2miners.com/'
-	const json = await fetcher(home + 'api/accounts/0x' + address)
+	const json = await fetcher(home + 'api/accounts/' + addr)
 
 	const sat = (a: number) => a * 10 ** -9
 
@@ -28,14 +27,8 @@ async function twoMinersData() {
 		const ratio = (by: number) => (0.05 - sat(json.stats.balance)) / sat(by)
 
 		//increment les rewards comprise entre les intervalles
-		const incrRewards = (
-			interval: number[],
-			re: { timestamp: number; reward: number }
-		) =>
-			re.timestamp < unix - interval[0] &&
-			re.timestamp > unix - interval[1]
-				? re.reward
-				: 0
+		const incrRewards = (interval: number[], re: { timestamp: number; reward: number }) =>
+			re.timestamp < unix - interval[0] && re.timestamp > unix - interval[1] ? re.reward : 0
 
 		for (let re of json.rewards) {
 			yesterday += incrRewards([86400, 172800], re)
@@ -63,7 +56,7 @@ async function twoMinersData() {
 
 	return {
 		from: '2miners',
-		page: home + 'account/0x' + address,
+		page: home + 'account/' + addr,
 		balance: sat(json.stats.balance),
 		average: calcAverage(),
 		hashrate: json.hashrate,
@@ -72,9 +65,8 @@ async function twoMinersData() {
 	}
 }
 
-async function hiveonPoolData() {
-	const address = process.env.address
-	const url = 'https://hiveon.net/api/v0/miner/' + address
+async function hiveonPoolData(addr: string) {
+	const url = 'https://hiveon.net/api/v0/miner/' + addr
 	const bill = await fetcher(url + '/bill?currency=ETH')
 	const miner = await fetcher(url + '?currency=ETH')
 
@@ -82,7 +74,7 @@ async function hiveonPoolData() {
 
 	return {
 		from: 'hiveon',
-		page: 'https://hiveon.net/eth?miner=' + address,
+		page: 'https://hiveon.net/eth?miner=' + addr,
 		balance: bill.stats.balance,
 		average: average,
 		hashrate: miner.data.hashrate,
@@ -91,19 +83,9 @@ async function hiveonPoolData() {
 	}
 }
 
-export type Response = {
-	from: string
-	page: string
-	balance: number
-	average: number
-	hashrate: number
-	price: number
-	payments: {
-		amount: number
-		timestamp: number
-		tx: string
-	}[]
+export const choosePool = (store: Storage): Promise<Response> => {
+	if (store.pool === 'hiveon') return hiveonPoolData(store.address)
+	if (store.pool === '2miners') return twoMinersData(store.address)
+	//if (store.pool === 'ethermine') return twoMinersData(store.address)
+	else return twoMinersData(store.address)
 }
-
-export const choosePool = (pool: string): Promise<Response> =>
-	pool === 'hiveon' ? hiveonPoolData() : twoMinersData()

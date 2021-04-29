@@ -6,40 +6,12 @@
 		<meta name="msapplication-TileColor" content="#2b5797" />
 		<meta name="theme-color" content="#000000" />
 
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="./icons/apple-touch-icon.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="./icons/favicon-32x32.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="./icons/favicon-16x16.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="192x192"
-			href="./icons/android-chrome-192x192.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="192x192"
-			href="./icons/android-chrome-512x512.png"
-		/>
-		<link
-			rel="mask-icon"
-			href="./icons/safari-pinned-tab.svg"
-			color="#00ee93"
-		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-192x192.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-512x512.png" />
+		<link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#00ee93" />
 		<link rel="manifest" href="./site.webmanifest" />
 
 		<title>Tu seras payé</title>
@@ -47,32 +19,45 @@
 		<script src="./scripts/main.ts" defer></script>
 	</head>
 	<body>
-		<aside>Chargement...</aside>
-
 		<main>
-			<div>
-				<h1 id="titre">Tu seras payé</h1>
-				<p id="jourrestant">Dans 0 jours 00 heures et 00 minutes</p>
-				<p id="date">Le 00 janvier à 00 : 00</p>
+			<div class="selection">
+				<input type="text" id="address" placeholder="0x00000000..." />
+				<br />
+				<br />
+				<div class="pools">
+					<input type="radio" id="hiveon" name="pool" value="hiveon" />
+					<label for="hiveon">Hiveon</label>
+					<input type="radio" id="2miners" name="pool" value="2miners" />
+					<label for="2miners">2miners</label>
+					<input type="radio" id="ethermine" name="pool" value="ethermine" />
+					<label for="ethermine">Ethermine</label>
+				</div>
 			</div>
 
-			<div>
-				<p id="eth">0.000 / 0.05⬨</p>
-				<p>
-					<span id="prixbal">00.00</span> /
-					<span id="prixmax">00.00</span> €
-				</p>
-			</div>
+			<aside class="chargement">Chargement...</aside>
 
-			<div>
-				<p>
-					<a id="minerLink" href="" rel="noreferrer"></a>
-				</p>
-			</div>
+			<div class="principal">
+				<div>
+					<h1 id="titre">Tu seras payé</h1>
+					<p id="jourrestant">Dans 0 jours 00 heures et 00 minutes</p>
+					<p id="date">Le 00 janvier à 00 : 00</p>
+				</div>
 
-			<div id="history">
-				<h3>History</h3>
-				<div id="liste"></div>
+				<div>
+					<p id="eth">0.000 / 0.05⬨</p>
+					<p><span id="prixbal">00.00</span> / <span id="prixmax">00.00</span> €</p>
+				</div>
+
+				<div>
+					<p>
+						<a id="minerLink" href="" rel="noreferrer"></a>
+					</p>
+				</div>
+
+				<div id="history">
+					<h3>History</h3>
+					<div id="liste"></div>
+				</div>
 			</div>
 		</main>
 	</body>

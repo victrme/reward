@@ -26,11 +26,27 @@ aside {
 	animation: chargement 1s 1s alternate infinite;
 }
 
+input {
+	background-color: #000;
+	border: 1px solid rgba($accent, 0.8);
+	color: $accent;
+	padding: 10px;
+	border-radius: 4px;
+	outline: none;
+
+	&.error {
+		border-color: red;
+	}
+
+	&::placeholder {
+		color: rgba($accent, 0.5);
+	}
+}
+
 main {
 	display: grid;
 	place-content: center;
 	min-height: calc(100vh - 4em);
-	opacity: 0;
 	padding: 2em;
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiB2aWV3Qm94PSIwIDAgMTMyLjI5MiAxMzIuMjkyIiB4bWxuczp2PSJodHRwczovL3ZlY3RhLmlvL25hbm8iPjxnIHRyYW5zZm9ybT0ibWF0cml4KC0xIDAgMCAxIDE2NC40MTk2NSAtNjAuMzg2ODkpIj48cGF0aCBkPSJNMzIuMTI4IDYwLjM4N0gxNjQuNDJWMTkyLjY4SDMyLjEyOHoiIHBhaW50LW9yZGVyPSJtYXJrZXJzIGZpbGwgc3Ryb2tlIi8+PHJlY3Qgcnk9Ii4wMjEiIHk9IjE5MS4zNTYiIHg9IjE2My4wOTciIGhlaWdodD0iMS4zMjMiIHdpZHRoPSIxLjMyMyIgZmlsbD0iIzBjMCIgcGFpbnQtb3JkZXI9Im1hcmtlcnMgZmlsbCBzdHJva2UiLz48L2c+PC9zdmc+');
 	background-size: 5em;
@@ -38,17 +54,28 @@ main {
 	background-position: 50% 50%;
 	transition: opacity 0.3s 0.05s;
 
-	> div {
-		margin: 1em 0;
-	}
-
-	&.loaded {
-		opacity: 1;
-	}
-
 	p,
 	h1 {
 		margin: 0;
+	}
+
+	.selection {
+		margin-bottom: 5em;
+	}
+
+	.principal {
+		opacity: 0;
+		user-select: none;
+
+		&.loaded {
+			opacity: 1;
+			user-select: auto;
+			transition: opacity 0.5s;
+		}
+
+		> div {
+			margin: 1em 0;
+		}
 	}
 
 	#date,
