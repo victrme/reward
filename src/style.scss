@@ -11,7 +11,7 @@ body {
 
 input {
 	background-color: #000;
-	border: 1px solid rgba($accent, 0.8);
+	border: 1px solid $accent;
 	color: $accent;
 	padding: 10px;
 	border-radius: 4px;
@@ -44,7 +44,7 @@ main {
 
 	.selection {
 		align-items: center;
-		margin-top: 20vh;
+		margin-top: 10vh;
 
 		.pools {
 			display: flex;
