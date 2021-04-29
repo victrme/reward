@@ -6,7 +6,11 @@ const id = (e: string) => document.getElementById(e)!
 
 const storage = {
 	init: () => {
-		if (localStorage.reward === undefined) localStorage.reward = JSON.stringify({ address: '', pool: '2miners' })
+		if (localStorage.reward === undefined)
+			localStorage.reward = JSON.stringify({
+				address: '',
+				pool: '2miners',
+			})
 	},
 
 	get: () => {
@@ -25,7 +29,11 @@ function minerStats(data: Response) {
 	function payoutDates() {
 		function countdown(d: { jour: number; heure: number }) {
 			const pluriel = (num: number, str: string[]) =>
-				num === 1 ? `${num} ${str[0]}` : num > 1 ? `${num} ${str[1]}` : ``
+				num === 1
+					? `${num} ${str[0]}`
+					: num > 1
+					? `${num} ${str[1]}`
+					: ``
 
 			return (
 				pluriel(d.jour, ['jour', 'jours']) +
@@ -65,6 +73,8 @@ function minerStats(data: Response) {
 			dom.restant.classList.add('shown')
 			dom.date.classList.add('shown')
 		} else {
+			dom.restant.classList.remove('shown')
+			dom.date.classList.remove('shown')
 			dom.titre.innerText = 'Tu ne mines pas'
 		}
 	}
@@ -90,10 +100,9 @@ function minerStats(data: Response) {
 	}
 
 	async function displayPrice() {
-		const maxAmount = data.from === 'hiveon' ? '0.10' : '0.05'
-		id('eth').innerText = `${data.balance.toFixed(3)} / ${maxAmount} ⬨`
+		id('eth').innerText = `${data.balance.toFixed(3)} / ${data.minPayout} ⬨`
 
-		id('prixmax').innerText = (0.05 * data.price).toFixed(2)
+		id('prixmax').innerText = (data.minPayout * data.price).toFixed(2)
 		id('prixbal').innerText = (data.balance * data.price).toFixed(2)
 
 		// Displays Everything at last
@@ -108,7 +117,7 @@ function minerStats(data: Response) {
 			minute: '2-digit',
 		})
 
-	history()
+	//history()
 	toMinerPage()
 	payoutDates()
 	displayPrice()
@@ -135,7 +144,9 @@ function initialisation() {
 	}
 
 	const input = document.querySelector('#address') as HTMLInputElement
-	const radios = document.querySelectorAll('.pools input') as NodeListOf<HTMLInputElement>
+	const radios = document.querySelectorAll(
+		'.pools input'
+	) as NodeListOf<HTMLInputElement>
 
 	// Init lS, Prevent JSON errors
 	storage.init()

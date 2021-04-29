@@ -4,6 +4,7 @@ export type Response = {
 	balance: number
 	average: number
 	hashrate: number
+	minPayout: number
 	price: number
 	payments: {
 		amount: number
