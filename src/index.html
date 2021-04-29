@@ -20,22 +20,6 @@
 	</head>
 	<body>
 		<main>
-			<div class="selection">
-				<input type="text" id="address" placeholder="0x00000000..." />
-				<br />
-				<br />
-				<div class="pools">
-					<input type="radio" id="hiveon" name="pool" value="hiveon" />
-					<label for="hiveon">Hiveon</label>
-					<input type="radio" id="2miners" name="pool" value="2miners" />
-					<label for="2miners">2miners</label>
-					<input type="radio" id="ethermine" name="pool" value="ethermine" />
-					<label for="ethermine">Ethermine</label>
-				</div>
-			</div>
-
-			<aside class="chargement">Chargement...</aside>
-
 			<div class="principal">
 				<div>
 					<h1 id="titre">Tu seras payé</h1>
@@ -57,6 +41,28 @@
 				<div id="history">
 					<h3>History</h3>
 					<div id="liste"></div>
+				</div>
+			</div>
+
+			<div class="selection">
+				<input type="text" id="address" placeholder="0x00000000..." />
+				<br />
+				<br />
+				<div class="pools">
+					<label for="hiveon">
+						<input type="radio" id="hiveon" name="pool" value="hiveon" />
+						Hiveon
+					</label>
+
+					<label for="2miners">
+						<input type="radio" id="2miners" name="pool" value="2miners" />
+						2miners
+					</label>
+
+					<label for="ethermine">
+						<input type="radio" id="ethermine" name="pool" value="ethermine" />
+						Ethermine
+					</label>
 				</div>
 			</div>
 		</main>
