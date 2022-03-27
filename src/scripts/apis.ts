@@ -1,15 +1,19 @@
 import { Response, Storage } from './types'
 
 async function fetcher(url: string) {
-	const response = await fetch(url)
-	const json = await response.json()
-	return json
+	let response, json
+	response = await fetch(url)
+
+	if (response.status === 200) {
+		json = await response.json()
+		return json
+	} else {
+		alert(response.status)
+	}
 }
 
 async function getEuroPrice() {
-	const x = await fetcher(
-		`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur`
-	)
+	const x = await fetcher(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=eur`)
 	return x.ethereum.eur
 }
 
@@ -26,24 +30,18 @@ async function twoMinersData(addr: string) {
 			jour = json.sumrewards[2].reward
 
 		//calc le nbr de jours avant reward
-		const ratio = (by: number) => (0.05 - sat(json.stats.balance)) / sat(by)
+		const ratio = (by: number) => (sat(json.config.minPayout) - sat(json.stats.balance)) / sat(by)
 
 		//increment les rewards comprise entre les intervalles
-		const incrRewards = (
-			interval: number[],
-			re: { timestamp: number; reward: number }
-		) =>
-			re.timestamp < unix - interval[0] &&
-			re.timestamp > unix - interval[1]
-				? re.reward
-				: 0
+		const incrRewards = (interval: number[], re: { timestamp: number; reward: number }) =>
+			re.timestamp < unix - interval[0] && re.timestamp > unix - interval[1] ? re.reward : 0
 
 		for (let re of json.rewards) {
 			yesterday += incrRewards([86400, 172800], re)
 			daybefore += incrRewards([172800, 259200], re)
 		}
 
-		const calcMoyenne = (array: number[]) => {
+		const calc = (array: number[]) => {
 			let average: number[] = []
 
 			array.forEach((temps) => {
@@ -59,7 +57,18 @@ async function twoMinersData(addr: string) {
 			}
 		}
 
-		return calcMoyenne([daybefore, yesterday, jour])
+		let result = calc([daybefore, yesterday, jour])
+
+		// Above payment threshold, will be payed when pool is ready (around 13h)
+		if (result < 0) {
+			const date = new Date()
+			const payedToday = date.getHours() <= 13
+			const hoursLeft = (when: number) => (when - date.getHours()) / 24
+
+			result = payedToday ? hoursLeft(13) : hoursLeft(37)
+		}
+
+		return result
 	}
 
 	return {
@@ -67,7 +76,7 @@ async function twoMinersData(addr: string) {
 		page: home + 'account/' + addr,
 		balance: sat(json.stats.balance),
 		average: calcAverage(),
-		minPayout: 0.05,
+		minPayout: sat(json.config.minPayout),
 		hashrate: json.hashrate,
 		payments: json.payments,
 		price: await getEuroPrice(),
@@ -75,22 +84,31 @@ async function twoMinersData(addr: string) {
 }
 
 async function hiveonPoolData(addr: string) {
-	const url = 'https://hiveon.net/api/v0/miner/' + addr
-	const bill = await fetcher(url + '/bill?currency=ETH')
-	const miner = await fetcher(url + '?currency=ETH')
+	addr = addr.replace('0x', '')
 
-	const average = (0.1 - bill.stats.balance) / bill.stats.pay1day
+	const json = await fetcher(`https://hiveon.net/api/v1/stats/miner/${addr}/ETH/billing-acc`)
 
-	return {
+	const data = {
 		from: 'hiveon',
 		page: 'https://hiveon.net/eth?miner=' + addr,
-		balance: bill.stats.balance,
-		average: average,
+		balance: 0,
+		average: 0,
 		minPayout: 0.1,
-		hashrate: miner.data.hashrate,
-		payments: bill.payments,
+		hashrate: 0,
+		payments: [],
 		price: await getEuroPrice(),
 	}
+
+	if (json.code === 404) alert(json.message)
+	else {
+		const average = (0.1 - json.totalUnpaid) / json.expectedReward24H
+		data.balance = json.totalUnpaid
+		data.average = average
+		data.hashrate = 0
+		data.payments = json.succeedPayouts
+	}
+
+	return data
 }
 
 async function ethermineData(addr: string) {
@@ -100,9 +118,7 @@ async function ethermineData(addr: string) {
 
 	// Flexible payout on ethermine
 	const minpayout = dashboard.data.settings.minPayout
-	const balance =
-		dashboard.data.currentStatistics.unpaid +
-		(dashboard.data.currentStatistics.unconfirmed | 0)
+	const balance = dashboard.data.currentStatistics.unpaid + (dashboard.data.currentStatistics.unconfirmed | 0)
 
 	// Gets coins per day average
 	// (Minimum payout - balance) / Coins per minutes
@@ -123,8 +139,19 @@ async function ethermineData(addr: string) {
 }
 
 export const choosePool = (store: Storage): Promise<Response> => {
-	if (store.pool === 'hiveon') return hiveonPoolData(store.address)
-	if (store.pool === '2miners') return twoMinersData(store.address)
-	if (store.pool === 'ethermine') return ethermineData(store.address)
-	else return twoMinersData(store.address)
+	const { pool, address } = store
+
+	switch (pool) {
+		case 'hiveon':
+			return hiveonPoolData(address)
+
+		case '2miners':
+			return twoMinersData(address)
+
+		case 'ethermine':
+			return ethermineData(address)
+
+		default:
+			return twoMinersData(address)
+	}
 }

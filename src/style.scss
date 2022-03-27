@@ -19,10 +19,30 @@ input {
 
 	&.error {
 		border-color: red;
+		color: red;
 	}
 
 	&::placeholder {
 		color: rgba($accent, 0.5);
+	}
+}
+
+button {
+	background-color: transparentize($color: $accent, $amount: 0.2);
+	font-family: monospace;
+	font-weight: lighter;
+	border-radius: 4px;
+	padding: 0.3em 0.5em;
+	border: none;
+	cursor: pointer;
+	transition: opacity 0.15s;
+
+	&:hover {
+		opacity: 0.8;
+	}
+
+	&:active {
+		opacity: 0.6;
 	}
 }
 
@@ -88,7 +108,7 @@ main {
 		text-decoration: none;
 		padding: 0.3em 0.5em;
 		border-radius: 4px;
-		transition: opacity 0.3s;
+		transition: opacity 0.15s;
 
 		&:hover {
 			opacity: 0.8;

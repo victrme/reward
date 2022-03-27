@@ -6,40 +6,12 @@
 		<meta name="msapplication-TileColor" content="#2b5797" />
 		<meta name="theme-color" content="#000000" />
 
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="./icons/apple-touch-icon.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="32x32"
-			href="./icons/favicon-32x32.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="16x16"
-			href="./icons/favicon-16x16.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="192x192"
-			href="./icons/android-chrome-192x192.png"
-		/>
-		<link
-			rel="icon"
-			type="image/png"
-			sizes="192x192"
-			href="./icons/android-chrome-512x512.png"
-		/>
-		<link
-			rel="mask-icon"
-			href="./icons/safari-pinned-tab.svg"
-			color="#00ee93"
-		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-192x192.png" />
+		<link rel="icon" type="image/png" sizes="192x192" href="./icons/android-chrome-512x512.png" />
+		<link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#00ee93" />
 		<link rel="manifest" href="./site.webmanifest" />
 
 		<title>Tu seras payé</title>
@@ -57,10 +29,7 @@
 
 				<div>
 					<p id="eth">0.000 / 0.05⬨</p>
-					<p>
-						<span id="prixbal">00.00</span> /
-						<span id="prixmax">00.00</span> €
-					</p>
+					<p><span id="prixbal">00.00</span> / <span id="prixmax">00.00</span> €</p>
 				</div>
 
 				<div>
@@ -70,43 +39,31 @@
 				</div>
 
 				<div id="history">
-					<h3>History</h3>
+					<h3>Historique</h3>
 					<div id="liste"></div>
 				</div>
 			</div>
 
 			<div class="selection">
-				<input type="text" id="address" placeholder="0x00000000..." />
+				<div>
+					<input type="text" id="address" placeholder="your address..." />
+					<button id="apply-address">go</button>
+				</div>
 				<br />
 				<br />
 				<div class="pools">
 					<label for="hiveon">
-						<input
-							type="radio"
-							id="hiveon"
-							name="pool"
-							value="hiveon"
-						/>
+						<input type="radio" id="hiveon" name="pool" value="hiveon" />
 						Hiveon
 					</label>
 
 					<label for="2miners">
-						<input
-							type="radio"
-							id="2miners"
-							name="pool"
-							value="2miners"
-						/>
+						<input type="radio" id="2miners" name="pool" value="2miners" />
 						2miners
 					</label>
 
 					<label for="ethermine">
-						<input
-							type="radio"
-							id="ethermine"
-							name="pool"
-							value="ethermine"
-						/>
+						<input type="radio" id="ethermine" name="pool" value="ethermine" />
 						Ethermine
 					</label>
 				</div>

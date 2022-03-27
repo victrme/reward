@@ -29,11 +29,7 @@ function minerStats(data: Response) {
 	function payoutDates() {
 		function countdown(d: { jour: number; heure: number }) {
 			const pluriel = (num: number, str: string[]) =>
-				num === 1
-					? `${num} ${str[0]}`
-					: num > 1
-					? `${num} ${str[1]}`
-					: ``
+				num === 1 ? `${num} ${str[0]}` : num > 1 ? `${num} ${str[1]}` : ``
 
 			return (
 				pluriel(d.jour, ['jour', 'jours']) +
@@ -100,7 +96,7 @@ function minerStats(data: Response) {
 	}
 
 	async function displayPrice() {
-		id('eth').innerText = `${data.balance.toFixed(3)} / ${data.minPayout} ⬨`
+		id('eth').innerText = `${data.balance.toFixed(5)} / ${data.minPayout} ⬨`
 
 		id('prixmax').innerText = (data.minPayout * data.price).toFixed(2)
 		id('prixbal').innerText = (data.balance * data.price).toFixed(2)
@@ -130,32 +126,45 @@ function principalShow(yes: boolean) {
 }
 
 function initialisation() {
-	function addressControl(str: string) {
-		return str.startsWith('0x') && str.length === 42
+	function addressControl(str: string, pool: string) {
+		const validate = (s: string, l: number) => str.startsWith(s) && str.length === l
+
+		// Test if ethereum address
+		let isValid = validate('0x', 42)
+
+		// Allows nano & btc addresses on 2miners
+		if (pool === '2miners') {
+			isValid = isValid || validate('nano_', 65) || validate('', 34) || validate('b', 42)
+		}
+
+		return isValid
 	}
 
 	function fetchAndDisplay() {
 		// Start API if correct data
 		const store = storage.get()
-		if (addressControl(store.address) && store.pool !== undefined) {
+		if (store.pool !== undefined) {
 			choosePool(store).then((a) => minerStats(a))
 			principalShow(false)
 		}
 	}
 
 	const input = document.querySelector('#address') as HTMLInputElement
-	const radios = document.querySelectorAll(
-		'.pools input'
-	) as NodeListOf<HTMLInputElement>
+	const button = document.querySelector('#apply-address') as HTMLButtonElement
+	const radios = document.querySelectorAll('.pools input') as NodeListOf<HTMLInputElement>
 
 	// Init lS, Prevent JSON errors
 	storage.init()
 
-	// Init Events
 	input.addEventListener('input', () => {
+		input.className = addressControl(input.value, storage.get().pool) ? '' : 'error'
+	})
+
+	button.addEventListener('click', () => {
 		storage.set('address', input.value)
 		fetchAndDisplay()
 	})
+
 	radios.forEach((pool) => {
 		pool.addEventListener('change', () => {
 			storage.set('pool', pool.value)
