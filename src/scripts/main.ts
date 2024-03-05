@@ -1,6 +1,5 @@
 import { choosePool } from './apis'
 import { Response, Storage } from './types'
-import 'regenerator-runtime/runtime'
 
 const id = (e: string) => document.getElementById(e)!
 
